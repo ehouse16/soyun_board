@@ -16,13 +16,13 @@ public class Post {
     @GeneratedValue
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(nullable = false)
     private String content;
 
-    @Column
+    @Column(nullable = false)
     private String author;
 
     @Builder
