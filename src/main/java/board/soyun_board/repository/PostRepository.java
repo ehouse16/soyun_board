@@ -1,4 +1,9 @@
 package board.soyun_board.repository;
 
-public class PostRepository {
+
+import board.soyun_board.entity.Post;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PostRepository extends JpaRepository<Post, Long> {
+
 }
