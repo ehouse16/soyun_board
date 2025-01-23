@@ -56,4 +56,23 @@ class PostControllerTest {
         assertEquals("내용입니다", post.getContent());
         assertEquals("저자", post.getAuthor());
     }
+
+    @Test
+    @DisplayName("게시글 작성 완료_실패")
+    void 게시글_작성_완료_실패() throws Exception {
+        PostCreateDto postCreateDto = PostCreateDto.builder()
+                .title("제목")
+                .content("")
+                .author("저자")
+                .build();
+
+        String json = objectMapper.writeValueAsString(postCreateDto);
+
+        // when
+        mockMvc.perform(post("/post/write")
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
 }
