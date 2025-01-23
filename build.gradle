@@ -4,7 +4,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'board'
+group = 'practice'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -24,13 +24,35 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // Spring Boot dependencies
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // Spring Data JPA
+    implementation 'com.h2database:h2'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // Spring DevTools (optional)
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // Lombok annotation processing
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Lombok 의존성 (테스트 환경에만 추가)
+    testImplementation 'org.projectlombok:lombok:1.18.24' // 최신 버전 확인 후 사용
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24' // 테스트에서 Lombok 어노테이션 처리기 사용
+
+    // Testing dependencies
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+
+    // Lombok and MapStruct integration
+//    annotationProcessor "org.projectlombok:lombok-mapstruct-binding:0.2.0"
+    compileOnly 'org.projectlombok:lombok'
+
+    // MapStruct dependencies
+    implementation "org.mapstruct:mapstruct:1.6.3"
+    annotationProcessor "org.mapstruct:mapstruct-processor:1.6.3"
 }
 
 tasks.named('test') {
