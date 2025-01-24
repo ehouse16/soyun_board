@@ -1,6 +1,7 @@
 package board.soyun_board.controller;
 
 import board.soyun_board.dto.PostCreateDto;
+import board.soyun_board.dto.PostUpdateDto;
 import board.soyun_board.entity.Post;
 import board.soyun_board.mapper.PostMapper;
 import board.soyun_board.repository.PostRepository;
@@ -203,6 +204,50 @@ class PostControllerTest {
                 .andExpect(jsonPath("$[0].title").value("제목"))
                 .andExpect(jsonPath("$[0].content").value("내용검색하기"))
                 .andExpect(jsonPath("$[0].author").value("저자"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시글 수정 기능")
+    void 게시글_수정_완료() throws Exception{
+        PostCreateDto postCreateDto = PostCreateDto.builder()
+                .title("제목")
+                .content("내용")
+                .author("저자")
+                .build();
+
+        Post post = postMapper.toPostFromPostCreateDto(postCreateDto);
+
+        postRepository.save(post);
+
+        PostUpdateDto updateDto = PostUpdateDto.builder()
+                        .title("제목수정")
+                        .content("내용수정")
+                        .build();
+
+        mockMvc.perform(put("/posts/{id}", post.getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value("제목수정"))
+                .andExpect(jsonPath("$.content").value("내용수정"))
+                .andExpect(jsonPath("$.author").value(post.getAuthor()))
+                .andDo(print());
+
+        postRepository.save(post);
+    }
+
+    @Test
+    @DisplayName("게시글 수정 존재하지 않는 아이디")
+    void 존재하지_않는_id_게시글_수정() throws Exception{
+        PostUpdateDto postUpdateDto = new PostUpdateDto("제목수정", "내용수정");
+
+        String json = objectMapper.writeValueAsString(postUpdateDto);
+
+        mockMvc.perform(put("/post/{id}", 1L)
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isNotFound())
                 .andDo(print());
     }
 }

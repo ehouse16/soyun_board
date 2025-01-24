@@ -2,6 +2,7 @@ package board.soyun_board.service;
 
 import board.soyun_board.dto.PostCreateDto;
 import board.soyun_board.dto.PostResponseDto;
+import board.soyun_board.dto.PostUpdateDto;
 import board.soyun_board.dto.SearchDto;
 import board.soyun_board.entity.Post;
 import board.soyun_board.mapper.PostMapper;
@@ -165,5 +166,40 @@ class PostServiceTest {
         assertEquals("제목",postService.search(searchDto).get(0).getTitle());
         assertEquals("내용검색하기", postService.search(searchDto).get(0).getContent());
         assertEquals("저자", postService.search(searchDto).get(0).getAuthor());
+    }
+
+    @Test
+    @DisplayName("게시글 수정 기능")
+    void 게시글_수정_기능(){
+        PostCreateDto createDto = PostCreateDto.builder()
+                .title("제목")
+                .content("내용")
+                .author("저자")
+                .build();
+
+        Post post = postMapper.toPostFromPostCreateDto(createDto);
+
+        postRepository.save(post);
+
+        PostUpdateDto updateDto = new PostUpdateDto("제목수정","내용");
+
+        postService.modify(post.getId(), updateDto);
+
+        Post changedPost = postRepository.findById(post.getId()).orElseThrow(
+                () -> new EntityNotFoundException("해당 id에 존재하는 게시글이 없습니다")
+        );
+
+        assertEquals("제목수정", changedPost.getTitle());
+        assertEquals("내용", changedPost.getContent());
+        assertEquals("저자", changedPost.getAuthor());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 id 게시글 수정")
+    void 존재하지않는_게시글_id_수정(){
+        PostUpdateDto updateDto = new PostUpdateDto("제목수정", "내용수정");
+
+        assertThrows(EntityNotFoundException.class, () ->
+                postService.modify(1L, updateDto));
     }
 }
