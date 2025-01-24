@@ -86,7 +86,7 @@ public class PostService {
                 ()-> new EntityNotFoundException("해당 id에 존재하는 게시글이 없습니다")
         );
 
-        post.update(postUpdateDto.getTitle(), postUpdateDto.getContent());
+        post.update(postUpdateDto);
 
         PostResponseDto responseDto = postMapper.toPostResponseDtofromPost(post);
 
