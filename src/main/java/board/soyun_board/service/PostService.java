@@ -92,4 +92,12 @@ public class PostService {
 
         return responseDto;
     }
+
+    //게시글 삭제 기능
+    public void delete(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(
+                ()-> new EntityNotFoundException("해당 id에 존재하는 게시글이 없습니다")
+        );
+        postRepository.delete(post);
+    }
 }
