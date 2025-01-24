@@ -134,6 +134,15 @@ class PostControllerTest {
     }
 
     @Test
+    @DisplayName("게시글 단건 조회 존재하지 않는 아이디")
+    void 존재하지_않는_id_게시글_단건_조회() throws Exception{
+        mockMvc.perform(post("/post/{id}", 1L)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
     @DisplayName("게시글 제목 검색 기능")
     void 게시글_제목_검색() throws Exception{
         PostCreateDto postCreateDto1 = PostCreateDto.builder()
