@@ -37,8 +37,8 @@ public class PostController {
     //게시글 단건 조회
     @GetMapping("/posts/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PostResponseDto read(@PathVariable int id) {
-        PostResponseDto postResponseDto = postService.getPost();
+    public PostResponseDto read(@PathVariable Long id) {
+        PostResponseDto postResponseDto = postService.getPost(id);
 
         return postResponseDto;
     }
