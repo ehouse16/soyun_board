@@ -31,4 +31,14 @@ public class Post {
         this.content = content;
         this.author = author;
     }
+
+    /**
+     * 게시글 수정 편의상 메서드
+     * @param title
+     * @param content
+     */
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }
