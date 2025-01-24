@@ -105,6 +105,13 @@ class PostServiceTest {
     }
 
     @Test
+    @DisplayName("존재하지 않는 id 게시글 검색")
+    void 존재하지않는_게시글_id_검색(){
+        assertThrows(EntityNotFoundException.class, () ->
+                postService.getPost(1L));
+    }
+
+    @Test
     @DisplayName("게시글 제목 검색")
     void 게시글_제목_검색(){
         PostCreateDto createDto1 = PostCreateDto.builder()
