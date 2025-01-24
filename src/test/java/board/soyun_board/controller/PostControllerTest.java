@@ -132,4 +132,68 @@ class PostControllerTest {
                 .andExpect(jsonPath("$.author").value("저자"))
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("게시글 제목 검색 기능")
+    void 게시글_제목_검색() throws Exception{
+        PostCreateDto postCreateDto1 = PostCreateDto.builder()
+                .title("제목")
+                .content("내용")
+                .author("저자")
+                .build();
+
+        PostCreateDto postCreateDto2 = PostCreateDto.builder()
+                .title("제목검색하기")
+                .content("내용")
+                .author("저자")
+                .build();
+
+        Post post1 = postMapper.toPostFromPostCreateDto(postCreateDto1);
+        Post post2 = postMapper.toPostFromPostCreateDto(postCreateDto2);
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        mockMvc.perform(get("/posts/search")
+                    .param("searchType", "title")
+                    .param("keyWord", "검색")
+                    .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("제목검색"))
+                .andExpect(jsonPath("$[0].content").value("내용"))
+                .andExpect(jsonPath("$[0].author").value("저자"))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("게시글 내용 검색 기능")
+    void 게시글_내용_검색() throws Exception{
+        PostCreateDto postCreateDto1 = PostCreateDto.builder()
+                .title("제목")
+                .content("내용")
+                .author("저자")
+                .build();
+
+        PostCreateDto postCreateDto2 = PostCreateDto.builder()
+                .title("제목")
+                .content("내용검색하기")
+                .author("저자")
+                .build();
+
+        Post post1 = postMapper.toPostFromPostCreateDto(postCreateDto1);
+        Post post2 = postMapper.toPostFromPostCreateDto(postCreateDto2);
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        mockMvc.perform(get("/posts/search")
+                        .param("searchType", "content")
+                        .param("keyWord", "검색")
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("제목"))
+                .andExpect(jsonPath("$[0].content").value("내용검색하기"))
+                .andExpect(jsonPath("$[0].author").value("저자"))
+                .andDo(print());
+    }
 }

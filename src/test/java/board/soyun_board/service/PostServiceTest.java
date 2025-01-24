@@ -1,6 +1,8 @@
 package board.soyun_board.service;
 
 import board.soyun_board.dto.PostCreateDto;
+import board.soyun_board.dto.PostResponseDto;
+import board.soyun_board.dto.SearchDto;
 import board.soyun_board.entity.Post;
 import board.soyun_board.mapper.PostMapper;
 import board.soyun_board.repository.PostRepository;
@@ -100,5 +102,61 @@ class PostServiceTest {
         assertEquals("제목", postRepository.findAll().get(0).getTitle());
         assertEquals("내용", postRepository.findAll().get(0).getContent());
         assertEquals("저자", postRepository.findAll().get(0).getAuthor());
+    }
+
+    @Test
+    @DisplayName("게시글 제목 검색")
+    void 게시글_제목_검색(){
+        PostCreateDto createDto1 = PostCreateDto.builder()
+                .title("제목")
+                .content("내용")
+                .author("저자")
+                .build();
+
+        Post post1 = postMapper.toPostFromPostCreateDto(createDto1);
+        postRepository.save(post1);
+
+        PostCreateDto createDto2 = PostCreateDto.builder()
+                .title("제목검색하기")
+                .content("내용")
+                .author("저자")
+                .build();
+
+        Post post2 = postMapper.toPostFromPostCreateDto(createDto2);
+        postRepository.save(post2);
+
+        SearchDto searchDto = new SearchDto("title", "검색");
+
+        assertEquals("제목검색하기",postService.search(searchDto).get(0).getTitle());
+        assertEquals("내용", postService.search(searchDto).get(0).getContent());
+        assertEquals("저자", postService.search(searchDto).get(0).getAuthor());
+    }
+
+    @Test
+    @DisplayName("게시글 내용 검색")
+    void 게시글_내용_검색(){
+        PostCreateDto createDto1 = PostCreateDto.builder()
+                .title("제목")
+                .content("내용")
+                .author("저자")
+                .build();
+
+        Post post1 = postMapper.toPostFromPostCreateDto(createDto1);
+        postRepository.save(post1);
+
+        PostCreateDto createDto2 = PostCreateDto.builder()
+                .title("제목")
+                .content("내용검색하기")
+                .author("저자")
+                .build();
+
+        Post post2 = postMapper.toPostFromPostCreateDto(createDto2);
+        postRepository.save(post2);
+
+        SearchDto searchDto = new SearchDto("content", "검색");
+
+        assertEquals("제목",postService.search(searchDto).get(0).getTitle());
+        assertEquals("내용검색하기", postService.search(searchDto).get(0).getContent());
+        assertEquals("저자", postService.search(searchDto).get(0).getAuthor());
     }
 }
