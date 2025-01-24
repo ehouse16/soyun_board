@@ -16,6 +16,6 @@ public class PostCreateDto {
     @Size(min = 1, max = 1000, message = "내용은 최소 1자, 최대 1000자까지 입력할 수 있습니다")
     private String content;
 
-    @NotBlank(message = "글쓴이를 임력해주세요")
+    @NotBlank(message = "글쓴이를 입력해주세요")
     private String author;
 }
