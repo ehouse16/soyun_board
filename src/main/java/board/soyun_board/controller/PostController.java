@@ -2,6 +2,7 @@ package board.soyun_board.controller;
 
 import board.soyun_board.dto.PostCreateDto;
 import board.soyun_board.dto.PostResponseDto;
+import board.soyun_board.dto.PostUpdateDto;
 import board.soyun_board.dto.SearchDto;
 import board.soyun_board.service.PostService;
 import jakarta.validation.Valid;
@@ -52,5 +53,14 @@ public class PostController {
         List<PostResponseDto> posts = postService.search(searchDto);
 
         return posts;
+    }
+
+    //게시글 수정
+    @PutMapping("/posts/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public PostResponseDto update(@PathVariable Long id, @RequestBody @Valid PostUpdateDto postUpdateDto) {
+        PostResponseDto post = postService.modify(id, postUpdateDto);
+
+        return post;
     }
 }

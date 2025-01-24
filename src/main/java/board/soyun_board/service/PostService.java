@@ -2,10 +2,12 @@ package board.soyun_board.service;
 
 import board.soyun_board.dto.PostCreateDto;
 import board.soyun_board.dto.PostResponseDto;
+import board.soyun_board.dto.PostUpdateDto;
 import board.soyun_board.dto.SearchDto;
 import board.soyun_board.entity.Post;
 import board.soyun_board.mapper.PostMapper;
 import board.soyun_board.repository.PostRepository;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -75,5 +77,19 @@ public class PostService {
             default:
                 return postRepository.findAll().stream().map(postMapper::toPostResponseDtofromPost).toList();
         }
+    }
+
+    //게시글 수정 기능
+    @Transactional
+    public PostResponseDto modify(Long id, PostUpdateDto postUpdateDto) {
+        Post post = postRepository.findById(id).orElseThrow(
+                ()-> new EntityNotFoundException("해당 id에 존재하는 게시글이 없습니다")
+        );
+
+        post.update(postUpdateDto);
+
+        PostResponseDto responseDto = postMapper.toPostResponseDtofromPost(post);
+
+        return responseDto;
     }
 }
