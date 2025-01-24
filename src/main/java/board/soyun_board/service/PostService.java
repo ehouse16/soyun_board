@@ -2,6 +2,7 @@ package board.soyun_board.service;
 
 import board.soyun_board.dto.PostCreateDto;
 import board.soyun_board.dto.PostResponseDto;
+import board.soyun_board.dto.SearchDto;
 import board.soyun_board.entity.Post;
 import board.soyun_board.mapper.PostMapper;
 import board.soyun_board.repository.PostRepository;
@@ -55,5 +56,21 @@ public class PostService {
         PostResponseDto responseDto = postMapper.toPostResponseDtofromPost(post);
 
         return responseDto;
+    }
+
+    //게시글 검색 기능
+    @Transactional(readOnly = true)
+    public List<PostResponseDto> search(SearchDto searchDto) {
+        String searchType = searchDto.getSearchType();
+        String keyword = searchDto.getKeyWord();
+
+        switch(searchType) {
+            case "title":
+                return postRepository.findAllByTitleContaining(keyword).stream().map(postMapper::toPostResponseDtofromPost).toList();
+            case "content":
+                return postRepository.findAllByContentContaining(keyword).stream().map(postMapper::toPostResponseDtofromPost).toList();
+            default:
+                return postRepository.findAll().stream().map(postMapper::toPostResponseDtofromPost).toList();
+        }
     }
 }

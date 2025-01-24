@@ -2,6 +2,7 @@ package board.soyun_board.controller;
 
 import board.soyun_board.dto.PostCreateDto;
 import board.soyun_board.dto.PostResponseDto;
+import board.soyun_board.dto.SearchDto;
 import board.soyun_board.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,16 @@ public class PostController {
         PostResponseDto postResponseDto = postService.getPost();
 
         return postResponseDto;
+    }
+
+    //게시글 검색
+    @GetMapping("/posts/search")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PostResponseDto> search(@RequestParam String searchType, @RequestParam String keyWord) {
+        SearchDto searchDto = new SearchDto(searchType, keyWord);
+
+        List<PostResponseDto> posts = postService.search(searchDto);
+
+        return posts;
     }
 }
