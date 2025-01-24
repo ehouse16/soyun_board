@@ -250,4 +250,32 @@ class PostControllerTest {
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
+
+    @Test
+    @DisplayName("게시글 삭제 기능")
+    void 게시글_삭제_기능() throws Exception{
+        PostCreateDto postCreateDto = PostCreateDto.builder()
+                .title("제목")
+                .content("내용")
+                .author("저자")
+                .build();
+
+        Post post = postMapper.toPostFromPostCreateDto(postCreateDto);
+
+        postRepository.save(post);
+
+        mockMvc.perform(delete("/posts/{id}", post.getId())
+                .contentType(APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 id로 게시글 삭제")
+    void 존재하지_않는_게시글id_삭제() throws Exception{
+        mockMvc.perform(delete("/post/{id}", 1L)
+                        .contentType(APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andDo(print());
+    }
 }

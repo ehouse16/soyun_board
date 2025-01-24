@@ -63,4 +63,11 @@ public class PostController {
 
         return post;
     }
+
+    //게시글 삭제
+    @DeleteMapping("/posts/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable Long id) {
+        postService.delete(id);
+    }
 }

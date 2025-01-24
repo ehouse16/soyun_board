@@ -202,4 +202,29 @@ class PostServiceTest {
         assertThrows(EntityNotFoundException.class, () ->
                 postService.modify(1L, updateDto));
     }
+
+    @Test
+    @DisplayName("게시글 삭제 기능")
+    void 게시글_삭제_기능(){
+        PostCreateDto createDto = PostCreateDto.builder()
+                .title("제목")
+                .content("내용")
+                .author("저자")
+                .build();
+
+        Post post = postMapper.toPostFromPostCreateDto(createDto);
+
+        postRepository.save(post);
+
+        postService.delete(post.getId());
+
+        assertEquals(0, postRepository.findAll().size());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 id 게시글 삭제")
+    void 존재하지_않는_게시글_id_삭제(){
+        assertThrows(EntityNotFoundException.class, () ->
+                postService.delete(1L));
+    }
 }
