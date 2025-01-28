@@ -5,6 +5,8 @@ import board.soyun_board.dto.PostResponseDto;
 import board.soyun_board.dto.PostUpdateDto;
 import board.soyun_board.dto.SearchDto;
 import board.soyun_board.entity.Post;
+import board.soyun_board.exception.BoardException;
+import board.soyun_board.exception.ErrorCode;
 import board.soyun_board.mapper.PostMapper;
 import board.soyun_board.repository.PostRepository;
 import jakarta.persistence.Entity;
@@ -26,7 +28,7 @@ public class PostService {
     @Transactional
     public PostResponseDto write(PostCreateDto postCreateDto) {
         if(postCreateDto.getTitle().isEmpty() || postCreateDto.getContent().isEmpty() || postCreateDto.getAuthor() == null){
-            throw new IllegalArgumentException("게시글 작성에 실패하였습니다");
+            throw new BoardException(ErrorCode.INVALID_REQUEST_DATA);
         }
         Post post = postMapper.toPostFromPostCreateDto(postCreateDto);
 
@@ -55,7 +57,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponseDto getPost(Long id) {
         Post post = postRepository.findById(id).orElseThrow(
-                ()->new EntityNotFoundException("해당 아이디에 존재하는 게시글을 찾을 수 없습니다")
+                ()->new BoardException(ErrorCode.POST_NOT_FOUND)
         );
 
         PostResponseDto responseDto = postMapper.toPostResponseDtofromPost(post);
@@ -83,7 +85,7 @@ public class PostService {
     @Transactional
     public PostResponseDto modify(Long id, PostUpdateDto postUpdateDto) {
         Post post = postRepository.findById(id).orElseThrow(
-                ()-> new EntityNotFoundException("해당 id에 존재하는 게시글이 없습니다")
+                ()->new BoardException(ErrorCode.POST_NOT_FOUND)
         );
 
         post.update(postUpdateDto);
@@ -96,7 +98,7 @@ public class PostService {
     //게시글 삭제 기능
     public void delete(Long id) {
         Post post = postRepository.findById(id).orElseThrow(
-                ()-> new EntityNotFoundException("해당 id에 존재하는 게시글이 없습니다")
+                ()->new BoardException(ErrorCode.POST_NOT_FOUND)
         );
         postRepository.delete(post);
     }
