@@ -18,7 +18,10 @@ public class ExceptionController {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex) {
-        ErrorResponse response = new ErrorResponse(500, "서버 내부 에러");
-        return ResponseEntity.status(500).body(response);
+        int status = ErrorCode.INTERNAL_SERVER_ERROR.getStatus();
+        String message = ErrorCode.INTERNAL_SERVER_ERROR.getMessage();
+
+        ErrorResponse response = new ErrorResponse(status, message);
+        return ResponseEntity.status(status).body(response);
     }
 }

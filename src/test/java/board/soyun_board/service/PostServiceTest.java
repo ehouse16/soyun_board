@@ -1,10 +1,12 @@
 package board.soyun_board.service;
 
 import board.soyun_board.dto.PostCreateDto;
-import board.soyun_board.dto.PostResponseDto;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import board.soyun_board.dto.PostUpdateDto;
 import board.soyun_board.dto.SearchDto;
 import board.soyun_board.entity.Post;
+import board.soyun_board.exception.BoardException;
+import board.soyun_board.exception.ErrorCode;
 import board.soyun_board.mapper.PostMapper;
 import board.soyun_board.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -43,12 +45,14 @@ class PostServiceTest {
         postRepository.save(savedpost);
 
         Post post = postRepository.findById(savedpost.getId())
-                .orElseThrow(()-> new EntityNotFoundException("Post not found"));
+                .orElseThrow(()-> new BoardException(ErrorCode.POST_NOT_FOUND));
 
-        assertEquals(savedpost.getId(), post.getId());
-        assertEquals(savedpost.getTitle(), post.getTitle());
-        assertEquals(savedpost.getContent(), post.getContent());
-        assertEquals(savedpost.getAuthor(), post.getAuthor());
+        assertAll(
+                () -> assertEquals(savedpost.getId(), post.getId()),
+                () -> assertEquals(savedpost.getTitle(), post.getTitle()),
+                () -> assertEquals(savedpost.getContent(), post.getContent()),
+                () -> assertEquals(savedpost.getAuthor(), post.getAuthor())
+        );
     }
 
     @Test
@@ -60,8 +64,12 @@ class PostServiceTest {
                 .author("테스트 저자 1")
                 .build();
 
-        assertThrows(IllegalArgumentException.class, () ->
-                postService.write(postCreateDto));
+        assertAll(
+                () -> assertThatThrownBy(
+                        () -> postService.write(postCreateDto))
+                        .isInstanceOf(BoardException.class)
+                        .hasMessageContaining(ErrorCode.INVALID_REQUEST_DATA.getMessage())
+                );
     }
 
     @Test
@@ -81,10 +89,12 @@ class PostServiceTest {
 
         postRepository.saveAll(posts);
 
-        assertEquals(posts.size(), postRepository.findAll().size());
-        assertEquals(posts.get(0).getTitle(), postRepository.findAll().get(0).getTitle());
-        assertEquals(posts.get(0).getContent(), postRepository.findAll().get(0).getContent());
-        assertEquals(posts.get(0).getAuthor(), postRepository.findAll().get(0).getAuthor());
+        assertAll(
+                () -> assertEquals(posts.size(), postRepository.findAll().size()),
+                () -> assertEquals(posts.get(0).getTitle(), postRepository.findAll().get(0).getTitle()),
+                () -> assertEquals(posts.get(0).getContent(), postRepository.findAll().get(0).getContent()),
+                () -> assertEquals(posts.get(0).getAuthor(), postRepository.findAll().get(0).getAuthor())
+        );
     }
 
     @Test
@@ -100,16 +110,22 @@ class PostServiceTest {
 
         postRepository.save(post);
 
-        assertEquals("제목", postRepository.findAll().get(0).getTitle());
-        assertEquals("내용", postRepository.findAll().get(0).getContent());
-        assertEquals("저자", postRepository.findAll().get(0).getAuthor());
+        assertAll(
+                () -> assertEquals("제목", postRepository.findAll().get(0).getTitle()),
+                () -> assertEquals("내용", postRepository.findAll().get(0).getContent()),
+                () -> assertEquals("저자", postRepository.findAll().get(0).getAuthor())
+        );
     }
 
     @Test
     @DisplayName("존재하지 않는 id 게시글 검색")
     void 존재하지않는_게시글_id_검색(){
-        assertThrows(EntityNotFoundException.class, () ->
-                postService.getPost(1L));
+        assertAll(
+                () -> assertThatThrownBy(
+                        () -> postService.getPost(1L))
+                        .isInstanceOf(BoardException.class)
+                        .hasMessageContaining(ErrorCode.POST_NOT_FOUND.getMessage())
+        );
     }
 
     @Test
@@ -135,9 +151,11 @@ class PostServiceTest {
 
         SearchDto searchDto = new SearchDto("title", "검색");
 
-        assertEquals("제목검색하기",postService.search(searchDto).get(0).getTitle());
-        assertEquals("내용", postService.search(searchDto).get(0).getContent());
-        assertEquals("저자", postService.search(searchDto).get(0).getAuthor());
+        assertAll(
+                () -> assertEquals("제목검색하기",postService.search(searchDto).get(0).getTitle()),
+                () -> assertEquals("내용", postService.search(searchDto).get(0).getContent()),
+                () -> assertEquals("저자", postService.search(searchDto).get(0).getAuthor())
+        );
     }
 
     @Test
@@ -163,9 +181,11 @@ class PostServiceTest {
 
         SearchDto searchDto = new SearchDto("content", "검색");
 
-        assertEquals("제목",postService.search(searchDto).get(0).getTitle());
-        assertEquals("내용검색하기", postService.search(searchDto).get(0).getContent());
-        assertEquals("저자", postService.search(searchDto).get(0).getAuthor());
+        assertAll(
+                () -> assertEquals("제목",postService.search(searchDto).get(0).getTitle()),
+                () -> assertEquals("내용검색하기", postService.search(searchDto).get(0).getContent()),
+                () -> assertEquals("저자", postService.search(searchDto).get(0).getAuthor())
+        );
     }
 
     @Test
@@ -186,12 +206,14 @@ class PostServiceTest {
         postService.modify(post.getId(), updateDto);
 
         Post changedPost = postRepository.findById(post.getId()).orElseThrow(
-                () -> new EntityNotFoundException("해당 id에 존재하는 게시글이 없습니다")
+                () -> new BoardException(ErrorCode.POST_NOT_FOUND)
         );
 
-        assertEquals("제목수정", changedPost.getTitle());
-        assertEquals("내용", changedPost.getContent());
-        assertEquals("저자", changedPost.getAuthor());
+        assertAll(
+                () -> assertEquals("제목수정", changedPost.getTitle()),
+                () -> assertEquals("내용", changedPost.getContent()),
+                () -> assertEquals("저자", changedPost.getAuthor())
+        );
     }
 
     @Test
@@ -199,8 +221,12 @@ class PostServiceTest {
     void 존재하지않는_게시글_id_수정(){
         PostUpdateDto updateDto = new PostUpdateDto("제목수정", "내용수정");
 
-        assertThrows(EntityNotFoundException.class, () ->
-                postService.modify(1L, updateDto));
+        assertAll(
+                () -> assertThatThrownBy(
+                        () -> postService.modify(1L,updateDto))
+                        .isInstanceOf(BoardException.class)
+                        .hasMessageContaining(ErrorCode.POST_NOT_FOUND.getMessage())
+        );
     }
 
     @Test
@@ -224,7 +250,11 @@ class PostServiceTest {
     @Test
     @DisplayName("존재하지 않는 id 게시글 삭제")
     void 존재하지_않는_게시글_id_삭제(){
-        assertThrows(EntityNotFoundException.class, () ->
-                postService.delete(1L));
+        assertAll(
+                () -> assertThatThrownBy(
+                        () -> postService.delete(1L))
+                        .isInstanceOf(BoardException.class)
+                        .hasMessageContaining(ErrorCode.POST_NOT_FOUND.getMessage())
+                );
     }
 }
