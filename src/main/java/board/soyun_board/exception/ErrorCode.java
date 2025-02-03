@@ -14,7 +14,7 @@ public enum ErrorCode {
     POST_NOT_FOUND(404, "해당 ID에 존재하는 게시글을 찾을 수 없습니다"),
 
     //500 SERVER ERROR
-    INTERNAL_SERVER_ERRO(500, "서버 내부에서 에러가 발생했습니다");
+    INTERNAL_SERVER_ERROR(500, "서버 내부에서 에러가 발생했습니다");
 
     private final int status;
     private final String message;
