@@ -6,7 +6,7 @@ Soyun Board는 Spring Boot와 Vue.js를 기반으로 개발된 게시판 애플�
 * Backend: Spring Boot
 * Database: H2 Database (혹은 원하는 DB로 설정 가능)
 * Build Tool: Gradle
-  
+   
 ## 🚀 기능
 * 게시글 작성: 새로운 게시글을 작성할 수 있습니다.
 * 게시글 수정: 기존의 게시글을 수정할 수 있습니다.
