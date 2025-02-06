@@ -18,12 +18,16 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: 빌드
+        uses: gradle/gradle-build-action@v3.5.0
+        run: ./gradlew bootClean build bootJar
+
       - name: EC2에 배포
         run: |
           # SCP를 사용하여 JAR 파일을 EC2로 전송
-          scp -i ~/.ssh/id_rsa target/*.jar ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }}:/home/ec2-user/deploy.jar
+          scp build/libs/*.jar ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }}:/home/ec2-user/deploy.jar
           
           # EC2에서 명령어 실행하여 Spring Boot 애플리케이션을 백그라운드에서 실행
-          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }} << 'EOF'
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }} << 'EOF'
             nohup java -jar /home/ec2-user/deploy.jar &
           EOF
