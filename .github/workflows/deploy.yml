@@ -24,6 +24,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
+      - name: Build with Gradle
+        run: ./gradlew bootJar
+
       - name: EC2에 배포
         run: |
           # SCP를 사용하여 JAR 파일을 EC2로 전송
