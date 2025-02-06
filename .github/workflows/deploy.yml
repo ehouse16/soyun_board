@@ -18,9 +18,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: 빌드
-        uses: gradle/gradle-build-action@v3.5.0
-        run: ./gradlew bootClean build bootJar
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
 
       - name: EC2에 배포
         run: |
