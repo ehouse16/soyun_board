@@ -1,0 +1,26 @@
+name: CI/CD Pipeline for EC2
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 푸시될 때 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v2
+
+      - name: SSH 설정
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: EC2에 배포
+        run: |
+          scp -i ~/.ssh/soyunboard.pem target/soyun_board-0.0.1-SNAPSHOT.jar ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }}:/home/ec2-user
+          ssh -i ~/.ssh/soyunboard.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }} << EOF
+            nohup java -jar /home/ec2-user/soyun_board-0.0.1-SNAPSHOT.jar &
+          EOF
