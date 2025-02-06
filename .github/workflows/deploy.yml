@@ -26,7 +26,7 @@ jobs:
 
       - name: Verify SSH host
         env:
-          HOST: ${{ secrets.SERVER_HOST }}
+          HOST: ${{ secrets.EC2_IP }}
         run: |
           mkdir -p ~/.ssh
           rm -f ~/.ssh/known_hosts
