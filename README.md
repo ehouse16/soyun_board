@@ -1,5 +1,5 @@
 # Soyun Board
-Soyun Board는 Spring Boot와 Vue.js를 기반으로 개발된 게시판 애플리케이션입니다.
+Soyun Board는 Spring Boot와 React를 기반으로 개발된 게시판 애플리케이션입니다.
   
 ## 🛠 기술 스택
 * Frontend: Vue.js
