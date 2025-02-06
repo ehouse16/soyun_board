@@ -24,6 +24,15 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
+      - name: Verify SSH host
+        env:
+          HOST: ${{ secrets.SERVER_HOST }}
+        run: |
+          mkdir -p ~/.ssh
+          rm -f ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ env.HOST }} >> ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
       - name: Build with Gradle
         run: ./gradlew bootJar
 
