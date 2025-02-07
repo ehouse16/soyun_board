@@ -10,6 +10,7 @@ import board.soyun_board.exception.ErrorCode;
 import board.soyun_board.mapper.PostMapper;
 import board.soyun_board.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,12 @@ class PostServiceTest {
 
     @Autowired
     private PostRepository postRepository;
+
+
+    @BeforeEach
+    public void init() {
+        postRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("게시글 저장 테스트")
