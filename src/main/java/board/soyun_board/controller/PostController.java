@@ -17,6 +17,11 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
+    @GetMapping("/api/test")
+    public String hello() {
+        return "테스트입니다.";
+    }
+
     //게시글 작성
     @PostMapping("/post/write")
     @ResponseStatus(HttpStatus.CREATED)

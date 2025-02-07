@@ -3,14 +3,21 @@ package board.soyun_board.controller;
 import board.soyun_board.dto.PostCreateDto;
 import board.soyun_board.dto.PostUpdateDto;
 import board.soyun_board.entity.Post;
+import board.soyun_board.exception.BoardException;
+import board.soyun_board.exception.ErrorCode;
 import board.soyun_board.mapper.PostMapper;
 import board.soyun_board.repository.PostRepository;
+import board.soyun_board.service.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -18,6 +25,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -39,6 +47,14 @@ class PostControllerTest {
 
     @Autowired
     private PostMapper postMapper;
+
+    @Mock
+    private PostService postService;
+
+    @BeforeEach
+    public void init() {
+        postRepository.deleteAll();
+    }
 
     @Test
     @DisplayName("게시글 작성 완료")
@@ -71,7 +87,7 @@ class PostControllerTest {
     @DisplayName("게시글 작성 시 제목 글자 수 부족")
     void 게시글_작성시_제목글자수_부족() throws Exception {
         PostCreateDto postCreateDto = PostCreateDto.builder()
-                .title("제목")
+                .title("제목은 15자리를 넘길 수 없는데 넘겨버렸다!")
                 .content("")
                 .author("저자")
                 .build();
@@ -136,12 +152,18 @@ class PostControllerTest {
 
     @Test
     @DisplayName("게시글 단건 조회 존재하지 않는 아이디")
-    void 존재하지_않는_id_게시글_단건_조회() throws Exception{
-        mockMvc.perform(post("/post/{id}", 1L)
+    void 존재하지_않는_id_게시글_단건_조회() throws Exception {
+        Long invalidPostId = 999L;
+
+        mockMvc.perform(get("/posts/{id}", invalidPostId)
                         .contentType(APPLICATION_JSON))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isNotFound())  // 404 상태 코드 체크
+                .andExpect(jsonPath("$.message").value("해당 ID에 존재하는 게시글을 찾을 수 없습니다"))  // 에러 메시지 체크
                 .andDo(print());
     }
+
+
+
 
     @Test
     @DisplayName("게시글 제목 검색 기능")
@@ -169,7 +191,7 @@ class PostControllerTest {
                     .param("keyWord", "검색")
                     .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].title").value("제목검색"))
+                .andExpect(jsonPath("$[0].title").value("제목검색하기"))
                 .andExpect(jsonPath("$[0].content").value("내용"))
                 .andExpect(jsonPath("$[0].author").value("저자"))
                 .andDo(print());
@@ -244,7 +266,7 @@ class PostControllerTest {
 
         String json = objectMapper.writeValueAsString(postUpdateDto);
 
-        mockMvc.perform(put("/post/{id}", 1L)
+        mockMvc.perform(put("/posts/{id}", 1L)
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isNotFound())
@@ -273,7 +295,7 @@ class PostControllerTest {
     @Test
     @DisplayName("존재하지 않는 id로 게시글 삭제")
     void 존재하지_않는_게시글id_삭제() throws Exception{
-        mockMvc.perform(delete("/post/{id}", 1L)
+        mockMvc.perform(delete("/posts/{id}", 1L)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andDo(print());

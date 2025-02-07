@@ -3,7 +3,9 @@ package board.soyun_board.controller;
 import board.soyun_board.dto.ErrorResponse;
 import board.soyun_board.exception.BoardException;
 import board.soyun_board.exception.ErrorCode;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -16,9 +18,16 @@ public class ExceptionController {
         return ResponseEntity.status(errorCode.getStatus()).body(response);
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        ErrorResponse response = new ErrorResponse(ErrorCode.INVALID_REQUEST_DATA.getStatus(), ErrorCode.INVALID_REQUEST_DATA.getMessage());
+
+        return ResponseEntity.status(ErrorCode.INVALID_REQUEST_DATA.getStatus()).body(response);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex) {
-        int status = ErrorCode.INTERNAL_SERVER_ERROR.getStatus();
+        HttpStatus status = ErrorCode.INTERNAL_SERVER_ERROR.getStatus();
         String message = ErrorCode.INTERNAL_SERVER_ERROR.getMessage();
 
         ErrorResponse response = new ErrorResponse(status, message);
