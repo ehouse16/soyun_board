@@ -28,9 +28,9 @@ const PostList = () => {
                 {posts.length === 0 ? (
                     <Typography>게시글이 없습니다.</Typography>
                 ) : (
-                    posts.map((post, index) => (
-                        <Card key={index} sx={{ mb: 2 }}>
-                            <CardActionArea onClick={() => navigate(`/post/${index}`)}>
+                    posts.map((post) => (
+                        <Card key={post.id} sx={{ mb: 2 }}>
+                            <CardActionArea onClick={() => navigate(`/posts/${post.id}`)}> {/* post.id 사용 */}
                                 <CardContent>
                                     <Typography variant="h6" gutterBottom>
                                         {post.title}
