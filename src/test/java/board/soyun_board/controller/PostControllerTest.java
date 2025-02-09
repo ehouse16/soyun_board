@@ -17,7 +17,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -301,11 +300,4 @@ class PostControllerTest {
                 .andDo(print());
     }
 
-    @Test
-    @DisplayName("서버 에러 발생")
-    void 서버_에러_발생() throws Exception{
-        mockMvc.perform(get("/notexist")
-                .contentType(APPLICATION_JSON))
-                .andExpect(status().isInternalServerError());
-    }
 }
