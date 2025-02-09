@@ -25,6 +25,21 @@ const PostDetail = () => {
         navigate(`/posts/edit/${id}`); // 수정 페이지로 이동
     };
 
+    // 게시글 삭제 처리
+    const handleDeleteClick = async () => {
+        const confirmDelete = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
+        if (confirmDelete) {
+            try {
+                await axios.delete(`/posts/${id}`);
+                alert("게시글이 삭제되었습니다!");
+                navigate("/posts"); // 게시글 목록 페이지로 이동
+            } catch (error) {
+                console.error("게시글 삭제 중 오류 발생", error);
+                alert("게시글 삭제에 실패했습니다.");
+            }
+        }
+    };
+
     return (
         <Container maxWidth="md">
             <Box sx={{ mt: 5 }}>
@@ -44,8 +59,16 @@ const PostDetail = () => {
                                 variant="contained"
                                 color="primary"
                                 onClick={handleEditClick} // 수정 버튼 클릭 시 호출
+                                sx={{ mr: 2 }}
                             >
                                 수정
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={handleDeleteClick} // 삭제 버튼 클릭 시 호출
+                            >
+                                삭제
                             </Button>
                         </CardContent>
                     </Card>
