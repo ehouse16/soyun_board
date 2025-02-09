@@ -27,7 +27,7 @@ public class PostController {
     }
 
     //게시글 작성
-    @PostMapping("/post/write")
+    @PostMapping("/api/post/write")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary="게시글 작성", description = "PostCreateDto로 받은 게시글을 저장한다")
     public PostResponseDto write(@RequestBody @Valid PostCreateDto postCreateDto) {
@@ -38,7 +38,7 @@ public class PostController {
     }
 
     //게시글 전체 조회
-    @GetMapping("/posts")
+    @GetMapping("/api/posts")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "게시글 전체 조회", description = "저장되어있는 게시글 전체를 조회한다")
     public List<PostResponseDto> read() {
@@ -48,7 +48,7 @@ public class PostController {
     }
 
     //게시글 단건 조회
-    @GetMapping("/posts/{id}")
+    @GetMapping("/api/posts/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "게시글 단건 조회", description = "저장되어있는 게시글 중 한 건을 조회한다")
     public PostResponseDto read(@PathVariable Long id) {
@@ -58,7 +58,7 @@ public class PostController {
     }
 
     //게시글 검색
-    @GetMapping("/posts/search")
+    @GetMapping("/api/posts/search")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "게시글 검색", description = "저장되어있는 게시글 중 검색타입과, 검색단어를 준다면 해당 조건에 일치하는 게시글만을 조회한다")
     public List<PostResponseDto> search(@RequestParam String searchType, @RequestParam String keyWord) {
@@ -70,7 +70,7 @@ public class PostController {
     }
 
     //게시글 수정
-    @PutMapping("/posts/{id}")
+    @PutMapping("/api/posts/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "게시글 수정", description = "저장되어있는 게시글 중 전달된 id로 게시글을 찾아 수정한다")
     public PostResponseDto update(@PathVariable Long id, @RequestBody @Valid PostUpdateDto postUpdateDto) {
@@ -80,7 +80,7 @@ public class PostController {
     }
 
     //게시글 삭제
-    @DeleteMapping("/posts/{id}")
+    @DeleteMapping("/api/posts/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "게시글 삭제", description = "저장되어있는 게시글 중 전달된 id값의 게시글을 삭제한다")
     public void delete(@PathVariable Long id) {
