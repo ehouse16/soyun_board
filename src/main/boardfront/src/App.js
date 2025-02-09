@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import PostCreate from "./packages/PostCreate"; // PostCreate 컴포넌트 가져오기
 import PostList from "./packages/PostList"; // PostList 컴포넌트 가져오기
-import PostDetail from "./packages/PostDetail"; // PostDetail 컴포넌트 가져오기
+import PostDetail from "./packages/PostDetail";
+import PostEdit from "./packages/PostEdit"; // PostDetail 컴포넌트 가져오기
 
 function App() {
     return (
@@ -19,6 +20,7 @@ function App() {
                     <Route path="/post/create" element={<PostCreate />} />
                     <Route path="/posts" element={<PostList />} />
                     <Route path="/posts/:id" element={<PostDetail />} /> {/* 상세 페이지를 위한 Route 추가 */}
+                    <Route path="/posts/edit/:id" element={<PostEdit />} /> {/* 수정 페이지 경로 */}
                 </Routes>
             </div>
         </Router>
