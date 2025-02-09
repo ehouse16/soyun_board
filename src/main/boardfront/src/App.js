@@ -1,6 +1,7 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import PostCreate from "./packages/PostCreate"; // PostCreate 컴포넌트 가져오기
 import PostList from "./packages/PostList"; // PostList 컴포넌트 가져오기
+import PostDetail from "./packages/PostDetail"; // PostDetail 컴포넌트 가져오기
 
 function App() {
     return (
@@ -8,15 +9,16 @@ function App() {
             <div className="App">
                 <h1>홈페이지</h1>
                 <Link to={"/post/create"}>
-                    <button>move to create</button>
+                    <button>게시글 작성하기</button>
                 </Link>
                 <Link to={"/posts"}>
-                    <button>move to posts</button>
+                    <button>게시글 목록 보기</button>
                 </Link>
                 <Routes>
                     <Route path="/" element={<div>홈페이지</div>} />
                     <Route path="/post/create" element={<PostCreate />} />
                     <Route path="/posts" element={<PostList />} />
+                    <Route path="/posts/:id" element={<PostDetail />} /> {/* 상세 페이지를 위한 Route 추가 */}
                 </Routes>
             </div>
         </Router>
