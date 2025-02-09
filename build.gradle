@@ -53,6 +53,9 @@ dependencies {
     // MapStruct dependencies
     implementation "org.mapstruct:mapstruct:1.6.3"
     annotationProcessor "org.mapstruct:mapstruct-processor:1.6.3"
+
+    //swagger spring 3.X version
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.3'
 }
 
 tasks.named('test') {
@@ -104,6 +107,6 @@ task buildReact(type: Exec) {
 
 task copyReactBuildFiles(type: Copy) {
     dependsOn "buildReact"
-    from "$frontendDir/build"
-    into "$projectDir/src/main/resources/static"
+    from "$frontendDir/build" // React 빌드 결과물
+    into "$projectDir/src/main/resources/static" // 정적 리소스 폴더로 복사
 }
