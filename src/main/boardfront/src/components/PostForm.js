@@ -15,7 +15,7 @@ const PostForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("/post/write", post);
+            await axios.post("/api/post/write", post);
             alert("게시글이 성공적으로 작성되었습니다!"); // ✅ 성공 메시지 표시
             navigate("/"); // ✅ 게시글 목록 페이지로 이동
         } catch (error) {

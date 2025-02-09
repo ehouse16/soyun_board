@@ -10,7 +10,7 @@ const PostList = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axios.get("/posts");
+                const response = await axios.get("/api/posts");
                 setPosts(response.data);
             } catch (error) {
                 console.error("게시글을 불러오는 중 오류 발생", error);

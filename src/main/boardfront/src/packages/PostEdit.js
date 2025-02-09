@@ -13,7 +13,7 @@ const PostEdit = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`/posts/${id}`);
+                const response = await axios.get(`/api/posts/${id}`);
                 setPost({
                     title: response.data.title,
                     content: response.data.content,
@@ -35,7 +35,7 @@ const PostEdit = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`/posts/${id}`, {
+            await axios.put(`/api/posts/${id}`, {
                 title: post.title,
                 content: post.content,
             });
