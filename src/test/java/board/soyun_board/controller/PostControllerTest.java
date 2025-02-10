@@ -67,7 +67,7 @@ class PostControllerTest {
         String json = objectMapper.writeValueAsString(postCreateDto);
 
         // when
-        mockMvc.perform(post("/post/write")
+        mockMvc.perform(post("/api/post/write")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isCreated())
@@ -94,7 +94,7 @@ class PostControllerTest {
         String json = objectMapper.writeValueAsString(postCreateDto);
 
         // when
-        mockMvc.perform(post("/post/write")
+        mockMvc.perform(post("/api/post/write")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -118,7 +118,7 @@ class PostControllerTest {
 
         postRepository.saveAll(posts);
 
-        mockMvc.perform(get("/posts")
+        mockMvc.perform(get("/api/posts")
                     .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[19].title").value("제목 19"))
@@ -140,7 +140,7 @@ class PostControllerTest {
 
         postRepository.save(post);
 
-        mockMvc.perform(get("/posts/{id}", post.getId())
+        mockMvc.perform(get("/api/posts/{id}", post.getId())
                     .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("제목"))
@@ -154,7 +154,7 @@ class PostControllerTest {
     void 존재하지_않는_id_게시글_단건_조회() throws Exception {
         Long invalidPostId = 999L;
 
-        mockMvc.perform(get("/posts/{id}", invalidPostId)
+        mockMvc.perform(get("/api/posts/{id}", invalidPostId)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound())  // 404 상태 코드 체크
                 .andExpect(jsonPath("$.message").value("해당 ID에 존재하는 게시글을 찾을 수 없습니다"))  // 에러 메시지 체크
@@ -185,7 +185,7 @@ class PostControllerTest {
         postRepository.save(post1);
         postRepository.save(post2);
 
-        mockMvc.perform(get("/posts/search")
+        mockMvc.perform(get("/api/posts/search")
                     .param("searchType", "title")
                     .param("keyWord", "검색")
                     .contentType(APPLICATION_JSON))
@@ -217,7 +217,7 @@ class PostControllerTest {
         postRepository.save(post1);
         postRepository.save(post2);
 
-        mockMvc.perform(get("/posts/search")
+        mockMvc.perform(get("/api/posts/search")
                         .param("searchType", "content")
                         .param("keyWord", "검색")
                         .contentType(APPLICATION_JSON))
@@ -246,7 +246,7 @@ class PostControllerTest {
                         .content("내용수정")
                         .build();
 
-        mockMvc.perform(put("/posts/{id}", post.getId())
+        mockMvc.perform(put("/api/posts/{id}", post.getId())
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDto)))
                 .andExpect(status().isOk())
@@ -265,7 +265,7 @@ class PostControllerTest {
 
         String json = objectMapper.writeValueAsString(postUpdateDto);
 
-        mockMvc.perform(put("/posts/{id}", 1L)
+        mockMvc.perform(put("/api/posts/{id}", 1L)
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isNotFound())
@@ -285,7 +285,7 @@ class PostControllerTest {
 
         postRepository.save(post);
 
-        mockMvc.perform(delete("/posts/{id}", post.getId())
+        mockMvc.perform(delete("/api/posts/{id}", post.getId())
                 .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -294,7 +294,7 @@ class PostControllerTest {
     @Test
     @DisplayName("존재하지 않는 id로 게시글 삭제")
     void 존재하지_않는_게시글id_삭제() throws Exception{
-        mockMvc.perform(delete("/posts/{id}", 1L)
+        mockMvc.perform(delete("/api/posts/{id}", 1L)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andDo(print());

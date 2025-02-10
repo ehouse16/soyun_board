@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,11 +23,6 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    @GetMapping("/api/test")
-    public String hello() {
-        return "테스트입니다.";
-    }
-
     //게시글 작성
     @PostMapping("/api/post/write")
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,7 +31,6 @@ public class PostController {
         PostResponseDto postresponseDto = postService.write(postCreateDto);
 
         return postresponseDto;
-
     }
 
     //게시글 전체 조회
