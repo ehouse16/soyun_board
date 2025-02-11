@@ -60,6 +60,5 @@ class AuthControllerTest {
         User savedUser = userRepository.findByEmail(request.getEmail());
         assertNotNull(savedUser);  // savedUser가 null이 아니면 성공
         assertEquals(request.getEmail(), savedUser.getEmail());
-
     }
 }

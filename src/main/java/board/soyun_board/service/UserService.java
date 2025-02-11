@@ -2,6 +2,8 @@ package board.soyun_board.service;
 
 import board.soyun_board.dto.UserSignupRequest;
 import board.soyun_board.entity.User;
+import board.soyun_board.exception.BoardException;
+import board.soyun_board.exception.ErrorCode;
 import board.soyun_board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +28,7 @@ public class UserService {
         User user = userRepository.findByEmail(email);
 
         if(user != null) {
-            throw new IllegalArgumentException("이미 가입된 회원입니다");
+            throw new BoardException(ErrorCode.DUPLICATE_EMAIL);
         }
     }
 }

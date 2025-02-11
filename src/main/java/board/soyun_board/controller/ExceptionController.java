@@ -33,4 +33,5 @@ public class ExceptionController {
         ErrorResponse response = new ErrorResponse(status, message);
         return ResponseEntity.status(status).body(response);
     }
+
 }
