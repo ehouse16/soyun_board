@@ -1,24 +1,31 @@
 package board.soyun_board.controller;
 
-import board.soyun_board.dto.UserSignupRequest;
-import board.soyun_board.entity.User;
+import board.soyun_board.dto.user.LoginResponse;
+import board.soyun_board.dto.user.UserLoginRequest;
+import board.soyun_board.dto.user.UserSignupRequest;
+import board.soyun_board.entity.user.User;
+import board.soyun_board.exception.BoardException;
+import board.soyun_board.exception.ErrorCode;
 import board.soyun_board.repository.UserRepository;
 import board.soyun_board.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -37,22 +44,24 @@ class AuthControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Test
     @DisplayName("회원가입 완료")
-    void 회원가입_완료() throws Exception{
+    void 회원가입_완료() throws Exception {
         //given
         UserSignupRequest request = UserSignupRequest.builder()
-                .email("재롱@com")
-                .name("재롱")
-                .password("재롱123123")
+                .email("test@test.com")
+                .name("test")
+                .password("password123")
                 .build();
 
         String json = objectMapper.writeValueAsString(request);
         //when
-        mockMvc.perform(post("/api/signup")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+        mockMvc.perform(post("/api/auth/signup")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andExpect(status().isOk())
                 .andDo(print());
 
@@ -60,6 +69,5 @@ class AuthControllerTest {
         User savedUser = userRepository.findByEmail(request.getEmail());
         assertNotNull(savedUser);  // savedUser가 null이 아니면 성공
         assertEquals(request.getEmail(), savedUser.getEmail());
-
     }
 }

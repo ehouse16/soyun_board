@@ -1,6 +1,6 @@
-package board.soyun_board.entity;
+package board.soyun_board.entity.user;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
+import board.soyun_board.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

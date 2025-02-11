@@ -1,6 +1,6 @@
-package board.soyun_board.entity;
+package board.soyun_board.entity.post;
 
-import board.soyun_board.dto.PostUpdateDto;
+import board.soyun_board.dto.post.PostUpdateDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,13 +1,13 @@
-package board.soyun_board.dto;
+package board.soyun_board.dto.post;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-@AllArgsConstructor
-public class PostUpdateDto {
+public class PostResponseDto {
+    private Long id;
     private String title;
     private String content;
+    private String author;
 }

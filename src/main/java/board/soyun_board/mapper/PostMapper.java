@@ -1,8 +1,8 @@
 package board.soyun_board.mapper;
 
-import board.soyun_board.dto.PostCreateDto;
-import board.soyun_board.dto.PostResponseDto;
-import board.soyun_board.entity.Post;
+import board.soyun_board.dto.post.PostCreateDto;
+import board.soyun_board.dto.post.PostResponseDto;
+import board.soyun_board.entity.post.Post;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

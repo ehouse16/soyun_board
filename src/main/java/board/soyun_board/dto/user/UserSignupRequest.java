@@ -1,7 +1,7 @@
-package board.soyun_board.dto;
+package board.soyun_board.dto.user;
 
-import board.soyun_board.entity.Role;
-import board.soyun_board.entity.User;
+import board.soyun_board.entity.user.Role;
+import board.soyun_board.entity.user.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

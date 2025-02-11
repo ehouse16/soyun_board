@@ -1,15 +1,14 @@
 package board.soyun_board.service;
 
-import board.soyun_board.dto.PostCreateDto;
+import board.soyun_board.dto.post.PostCreateDto;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import board.soyun_board.dto.PostUpdateDto;
-import board.soyun_board.dto.SearchDto;
-import board.soyun_board.entity.Post;
+import board.soyun_board.dto.post.PostUpdateDto;
+import board.soyun_board.dto.post.SearchDto;
+import board.soyun_board.entity.post.Post;
 import board.soyun_board.exception.BoardException;
 import board.soyun_board.exception.ErrorCode;
 import board.soyun_board.mapper.PostMapper;
 import board.soyun_board.repository.PostRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package board.soyun_board.dto;
+package board.soyun_board.dto.post;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
