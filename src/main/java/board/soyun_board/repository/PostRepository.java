@@ -1,7 +1,7 @@
 package board.soyun_board.repository;
 
 
-import board.soyun_board.entity.Post;
+import board.soyun_board.entity.post.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 

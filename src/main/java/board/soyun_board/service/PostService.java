@@ -1,16 +1,14 @@
 package board.soyun_board.service;
 
-import board.soyun_board.dto.PostCreateDto;
-import board.soyun_board.dto.PostResponseDto;
-import board.soyun_board.dto.PostUpdateDto;
-import board.soyun_board.dto.SearchDto;
-import board.soyun_board.entity.Post;
+import board.soyun_board.dto.post.PostCreateDto;
+import board.soyun_board.dto.post.PostResponseDto;
+import board.soyun_board.dto.post.PostUpdateDto;
+import board.soyun_board.dto.post.SearchDto;
+import board.soyun_board.entity.post.Post;
 import board.soyun_board.exception.BoardException;
 import board.soyun_board.exception.ErrorCode;
 import board.soyun_board.mapper.PostMapper;
 import board.soyun_board.repository.PostRepository;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

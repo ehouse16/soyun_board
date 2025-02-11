@@ -1,9 +1,9 @@
 package board.soyun_board.controller;
 
-import board.soyun_board.dto.PostCreateDto;
-import board.soyun_board.dto.PostResponseDto;
-import board.soyun_board.dto.PostUpdateDto;
-import board.soyun_board.dto.SearchDto;
+import board.soyun_board.dto.post.PostCreateDto;
+import board.soyun_board.dto.post.PostResponseDto;
+import board.soyun_board.dto.post.PostUpdateDto;
+import board.soyun_board.dto.post.SearchDto;
 import board.soyun_board.service.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
