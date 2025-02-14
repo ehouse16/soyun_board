@@ -1,58 +1,42 @@
 package board.soyun_board.service;
 
-import board.soyun_board.component.JwtUtil;
-import board.soyun_board.dto.user.UserLoginRequest;
-import board.soyun_board.dto.user.UserSignupRequest;
+import board.soyun_board.dto.user.UserDTO;
 import board.soyun_board.entity.user.User;
 import board.soyun_board.exception.BoardException;
 import board.soyun_board.exception.ErrorCode;
 import board.soyun_board.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
+@Log4j2
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
 
-    @Transactional
-    public void signup(UserSignupRequest userSignupRequest) {
-        //이메일 중복 가입 확인 메서드
-        validateDuplicateUser(userSignupRequest.getEmail());
+    public UserDTO read(String email, String password){
+        Optional<User> result = userRepository.findByEmail(email);
 
-        User user = userSignupRequest.toEntity(passwordEncoder);
+        User user = result.orElseThrow(()-> new BoardException(ErrorCode.USER_NOT_FOUND));
 
-        user.encodePassword(passwordEncoder);
-        userRepository.save(user);
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            throw new BoardException(ErrorCode.BAD_CREDENTIALS);
+        }
+        return new UserDTO(user);
     }
 
-    private void validateDuplicateUser(String email) {
-        User user = userRepository.findByEmail(email);
+    public UserDTO getByEmail(String email){
+        Optional<User> result = userRepository.findByEmail(email);
 
-        if(user != null) {
-            throw new BoardException(ErrorCode.DUPLICATE_EMAIL);
-        }
-    }
+        User user = result.orElseThrow(()-> new BoardException(ErrorCode.USER_NOT_FOUND));
 
-    @Transactional(readOnly = true)
-    public String login(UserLoginRequest userLoginRequest){
-        //이메일을 통해 사용자 정보 조회
-        User user = userRepository.findByEmail(userLoginRequest.getEmail());
-
-        if(user == null) {
-            throw new BoardException(ErrorCode.USER_NOT_FOUND);
-        }
-
-        //비밀번호 확인
-        if(!passwordEncoder.matches(userLoginRequest.getPassword(), user.getPassword())){
-            throw new BoardException(ErrorCode.INVALID_PASSWORD);
-        }
-
-        //로그인 성공 시 JWT 토큰 생성
-        return jwtUtil.generateToken(user.getEmail());
+        return new UserDTO(user);
     }
 }

@@ -19,8 +19,8 @@ const PostCreate = () => {
         setError("");
 
         try {
-            await axios.post("/api/post/write", post);
-            navigate("/"); // 게시글 목록 페이지로 이동
+            await axios.post("/api/posts/write", post);
+            navigate("/posts"); // 게시글 목록 페이지로 이동
         } catch (err) {
             setError("게시글 작성에 실패했습니다. 다시 시도해주세요.");
         }

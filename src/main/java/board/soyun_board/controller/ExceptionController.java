@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.nio.file.AccessDeniedException;
+
 @RestControllerAdvice
 public class ExceptionController {
     @ExceptionHandler(BoardException.class)
@@ -29,6 +31,15 @@ public class ExceptionController {
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex) {
         HttpStatus status = ErrorCode.INTERNAL_SERVER_ERROR.getStatus();
         String message = ErrorCode.INTERNAL_SERVER_ERROR.getMessage();
+
+        ErrorResponse response = new ErrorResponse(status, message);
+        return ResponseEntity.status(status).body(response);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException ex) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        String message = "Access Denied";
 
         ErrorResponse response = new ErrorResponse(status, message);
         return ResponseEntity.status(status).body(response);

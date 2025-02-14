@@ -14,16 +14,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class User extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String email; // 아이디
 
     private String password;
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private Role role;
+
+    public void changePassword(String password){
+        this.password = password;
+    }
+
+    public void changeName(String name){
+        this.name = name;
+    }
+
+    public void changeRole(Role role){
+        this.role = role;
+    }
 
     @Builder
     public User(String email, String password, String name, Role role) {
