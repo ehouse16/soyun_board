@@ -18,10 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Tag(name = "CRUD API", description = "기본적인 CRUD 컨트롤러에 대한 설명입니다")
 public class PostController {
+
     private final PostService postService;
 
     //게시글 작성
-    @PostMapping("/api/post/write")
+    @PostMapping("/api/posts/write")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary="게시글 작성", description = "PostCreateDto로 받은 게시글을 저장한다")
     public PostResponseDto write(@RequestBody @Valid PostCreateDto postCreateDto) {
