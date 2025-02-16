@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // useNavigate 추가
 import axios from "axios";
 import { Container, Typography, Box, Card, CardContent, Button } from "@mui/material";
+import axiosInstance from './axiosConfig';
 
 const PostDetail = () => {
     const { id } = useParams();
@@ -11,7 +12,7 @@ const PostDetail = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`/api/posts/${id}`);
+                const response = await axiosInstance.get(`/api/posts/${id}`);
                 setPost(response.data);
             } catch (error) {
                 console.error("게시글을 불러오는 중 오류 발생", error);
@@ -30,7 +31,7 @@ const PostDetail = () => {
         const confirmDelete = window.confirm("정말로 이 게시글을 삭제하시겠습니까?");
         if (confirmDelete) {
             try {
-                await axios.delete(`/api/posts/${id}`);
+                await axiosInstance.delete(`/api/posts/${id}`);
                 alert("게시글이 삭제되었습니다!");
                 navigate("/posts"); // 게시글 목록 페이지로 이동
             } catch (error) {

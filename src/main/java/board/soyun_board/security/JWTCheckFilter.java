@@ -32,6 +32,7 @@ public class JWTCheckFilter extends OncePerRequestFilter {
         // Only apply filter to API requests that require authentication
         if (!path.startsWith("/api/") ||
                 path.startsWith("/api/auth/") ||
+                path.startsWith("/api/posts/") ||
                 path.startsWith("/api/v1/token/") ||
                 path.equals("/error")) {
             return true;

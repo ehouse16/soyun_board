@@ -1,80 +1,61 @@
-import {BrowserRouter as Router, Routes, Route, Link, Navigate} from "react-router-dom";
-import PostCreate from "./packages/PostCreate";
-import PostList from "./packages/PostList";
-import PostDetail from "./packages/PostDetail";
-import PostEdit from "./packages/PostEdit";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { AppBar, Toolbar, Button, Typography, Container, Box, Paper, TextField } from '@mui/material';
+import PostCreate from './packages/PostCreate';
+import PostList from './packages/PostList';
+import PostDetail from './packages/PostDetail';
+import PostEdit from './packages/PostEdit';
+import Login from './components/Login';
+import Signup from './components/Signup';
 
 function App() {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    // Check if user is authenticated on component mount
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
         setIsAuthenticated(!!token);
     }, []);
 
-    // Helper function to create protected routes
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        setIsAuthenticated(false);
+    };
+
     const ProtectedRoute = ({ children }) => {
         return isAuthenticated ? children : <Navigate to="/login" />;
     };
 
     return (
         <Router>
-            <div className="App">
-                <nav className="app-nav">
-                    <h1>게시판 애플리케이션</h1>
-                    <div className="nav-links">
-                        {isAuthenticated ? (
-                            <>
-                                <Link to="/posts/create">
-                                    <button>게시글 작성하기</button>
-                                </Link>
-                                <Link to="/posts">
-                                    <button>게시글 목록 보기</button>
-                                </Link>
-                                <button onClick={() => {
-                                    localStorage.removeItem('accessToken');
-                                    localStorage.removeItem('refreshToken');
-                                    setIsAuthenticated(false);
-                                }}>로그아웃</button>
-                            </>
-                        ) : (
-                            <>
-                                <Link to="/login">
-                                    <button>로그인</button>
-                                </Link>
-                                <Link to="/signup">
-                                    <button>회원가입</button>
-                                </Link>
-                            </>
-                        )}
-                    </div>
-                </nav>
-
+            <AppBar position="static">
+                <Toolbar>
+                    <Typography variant="h6" sx={{ flexGrow: 1 }}>게시판 애플리케이션</Typography>
+                    {isAuthenticated ? (
+                        <>
+                            <Button color="inherit" component={Link} to="/posts/create">게시글 작성</Button>
+                            <Button color="inherit" component={Link} to="/posts">게시글 목록</Button>
+                            <Button color="inherit" onClick={handleLogout}>로그아웃</Button>
+                        </>
+                    ) : (
+                        <>
+                            <Button color="inherit" component={Link} to="/login">로그인</Button>
+                            <Button color="inherit" component={Link} to="/signup">회원가입</Button>
+                        </>
+                    )}
+                </Toolbar>
+            </AppBar>
+            <Container sx={{ mt: 4 }}>
                 <Routes>
-                    {/* Public routes */}
-                    <Route path="/" element={<div className="home-page">게시판 홈페이지에 오신 것을 환영합니다</div>} />
+                    <Route path="/" element={<Typography variant="h4" align="center">게시판 홈페이지에 오신 것을 환영합니다</Typography>} />
                     <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
                     <Route path="/signup" element={<Signup />} />
-
-                    {/* Protected routes */}
-                    <Route path="/posts/create" element={
-                        <ProtectedRoute>
-                            <PostCreate />
-                        </ProtectedRoute>
-                    } />
+                    <Route path="/posts/create" element={<ProtectedRoute><PostCreate /></ProtectedRoute>} />
                     <Route path="/posts" element={<PostList />} />
                     <Route path="/posts/:id" element={<PostDetail />} />
-                    <Route path="/posts/edit/:id" element={
-                        <ProtectedRoute>
-                            <PostEdit />
-                        </ProtectedRoute>
-                    } />
+                    <Route path="/posts/edit/:id" element={<ProtectedRoute><PostEdit /></ProtectedRoute>} />
                 </Routes>
-            </div>
+            </Container>
         </Router>
     );
 }

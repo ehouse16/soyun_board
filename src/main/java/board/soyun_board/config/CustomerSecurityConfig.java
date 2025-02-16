@@ -48,7 +48,7 @@ public class CustomerSecurityConfig {
                 // Frontend React routes - allow all paths that don't start with /api
                 .requestMatchers(request -> !request.getServletPath().startsWith("/api/")).permitAll()
                 // Public API endpoints
-                .requestMatchers("/api/auth/**", "/api/v1/token/**", "/error").permitAll()
+                .requestMatchers("/api/posts/**", "/api/auth/**", "/api/v1/token/**", "/error").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 // Protected API endpoints
                 .anyRequest().authenticated()

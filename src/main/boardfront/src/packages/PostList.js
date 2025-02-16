@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Container, Typography, Box, Card, CardContent, CardActionArea } from "@mui/material";
+import axiosInstance from './axiosConfig';
 
 const PostList = () => {
     const [posts, setPosts] = useState([]);
@@ -10,7 +11,7 @@ const PostList = () => {
     useEffect(() => {
         const fetchPosts = async () => {
             try {
-                const response = await axios.get("/api/posts");
+                const response = await axiosInstance.get("/api/posts");
                 setPosts(response.data);
             } catch (error) {
                 console.error("게시글을 불러오는 중 오류 발생", error);

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Container, Typography, Box } from "@mui/material";
 import PostForm from "../components/PostForm"; // 입력 폼 컴포넌트 가져오기
+import axiosInstance from './axiosConfig';
 
 const PostCreate = () => {
     const navigate = useNavigate();
@@ -19,7 +20,7 @@ const PostCreate = () => {
         setError("");
 
         try {
-            await axios.post("/api/posts/write", post);
+            await axiosInstance.post("/api/posts/write", post);
             navigate("/posts"); // 게시글 목록 페이지로 이동
         } catch (err) {
             setError("게시글 작성에 실패했습니다. 다시 시도해주세요.");

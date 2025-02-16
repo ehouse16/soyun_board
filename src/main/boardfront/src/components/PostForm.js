@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom"; // ✅ 페이지 이동을 위한 훅
 import axios from "axios";
+import axiosInstance from "../packages/axiosConfig";
 
 const PostForm = () => {
     const [post, setPost] = useState({ title: "", content: "", author: "" });
@@ -15,7 +16,7 @@ const PostForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post("/api/posts/write", post);
+            await axiosInstance.post("/api/posts/write", post);
             alert("게시글이 성공적으로 작성되었습니다!"); // ✅ 성공 메시지 표시
             navigate("/"); // ✅ 게시글 목록 페이지로 이동
         } catch (error) {

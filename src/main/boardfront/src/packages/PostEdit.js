@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // URL 파라미터와 페이지 이동을 위한 훅
 import axios from "axios";
 import { TextField, Button } from "@mui/material";
+import axiosInstance from './axiosConfig';
 
 const PostEdit = () => {
     const { id } = useParams(); // URL에서 게시글 id 추출
@@ -13,7 +14,7 @@ const PostEdit = () => {
     useEffect(() => {
         const fetchPost = async () => {
             try {
-                const response = await axios.get(`/api/posts/${id}`);
+                const response = await axiosInstance.get(`/api/posts/${id}`);
                 setPost({
                     title: response.data.title,
                     content: response.data.content,
@@ -35,7 +36,7 @@ const PostEdit = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`/api/posts/${id}`, {
+            await axiosInstance.put(`/api/posts/${id}`, {
                 title: post.title,
                 content: post.content,
             });
