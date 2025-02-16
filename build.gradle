@@ -125,7 +125,6 @@ task copyReactBuildFiles(type: Copy) {
     from("${frontendDir}/build") {
     }
 
-
     // Set the main destination directory
     into "${projectDir}/src/main/resources/static"
 }
