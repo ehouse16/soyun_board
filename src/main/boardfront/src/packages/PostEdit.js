@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // URL 파라미터와 페이지 이동을 위한 훅
-import axios from "axios";
 import { TextField, Button } from "@mui/material";
 import axiosInstance from './axiosConfig';
 

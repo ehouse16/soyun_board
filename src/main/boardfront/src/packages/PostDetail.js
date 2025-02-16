@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // useNavigate 추가
-import axios from "axios";
 import { Container, Typography, Box, Card, CardContent, Button } from "@mui/material";
 import axiosInstance from './axiosConfig';
 

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { Container, Typography, Box } from "@mui/material";
 import PostForm from "../components/PostForm"; // 입력 폼 컴포넌트 가져오기
 import axiosInstance from './axiosConfig';

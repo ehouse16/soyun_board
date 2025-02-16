@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom"; // ✅ 페이지 이동을 위한 훅
-import axios from "axios";
 import axiosInstance from "../packages/axiosConfig";
 
 const PostForm = () => {
