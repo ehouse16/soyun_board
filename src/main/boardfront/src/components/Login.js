@@ -8,7 +8,9 @@ const Login = ({ setIsAuthenticated }) => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://13.124.180.241:8080/api/auth/login', {
+            const response = await fetch(
+                //'http://13.124.180.241:8080/api/auth/login', {
+                'http://localhost:8080/api/auth/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
