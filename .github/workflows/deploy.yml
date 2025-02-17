@@ -15,8 +15,8 @@ jobs:
 
       - name: SSH 및 필수 패키지 설치
         run: |
-          sudo apt-get update
-          sudo apt-get install -y openssh-client which
+          sudo yum update -y
+          sudo yum install -y openssh-clients which
 
       - name: SSH 설정
         uses: webfactory/ssh-agent@v0.5.3
