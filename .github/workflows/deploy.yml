@@ -41,5 +41,9 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_IP: ${{ secrets.EC2_IP }}
         run: |
+          # 출력 예시
+          echo "EC2_USER: $EC2_USER"
+          echo "EC2_IP: $EC2_IP"
+
           scp build/libs/*.jar $EC2_USER@$EC2_IP:/home/ec2-user/deploy.jar
           ssh $EC2_USER@$EC2_IP "chmod +x /home/ec2-user/deploy.sh && /home/ec2-user/deploy.sh"
