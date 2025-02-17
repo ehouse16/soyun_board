@@ -1,0 +1,27 @@
+# 공통 설정
+
+## ✅ 애플리케이션 기본 정보
+spring:
+  application:
+    name: soyun-board
+
+  ## ✅ 서버 설정
+  profiles:
+    active: dev   # 기본적으로 사용할 프로파일 (dev 또는 prod)
+  security:
+    filter:
+      order: 10
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  ## ✅ JPA 설정
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+## ✅ 서버 포트 및 네트워크 설정
+server:
+  port: 8080
+  address: 0.0.0.0
