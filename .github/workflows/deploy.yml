@@ -3,28 +3,35 @@ name: CI/CD Pipeline for EC2
 on:
   push:
     branches:
-      - master # master 브랜치에 푸시될 때 실행
+      - master
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 코드 체크아웃
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: SSH 및 필수 패키지 설치
+      - name: Install SSH client and dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y openssh-client which
+          sudo apt-get install -y openssh-client scp
 
-      - name: SSH 설정
+      - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          check-latest: false
+
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+        uses: gradle/gradle-build-action@v2
 
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
@@ -34,19 +41,16 @@ jobs:
           HOST: ${{ secrets.EC2_IP }}
         run: |
           mkdir -p ~/.ssh
-          rm -f ~/.ssh/known_hosts
-          ssh-keyscan -H ${{ env.HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
           chmod 600 ~/.ssh/known_hosts
 
       - name: Build with Gradle
         run: ./gradlew bootJar
 
-      - name: 배포
+      - name: Deploy to EC2
         env:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_IP: ${{ secrets.EC2_IP }}
-          JAVA_HOME: /usr/lib/jvm/java-17-openjdk
-          PATH: /usr/lib/jvm/java-17-openjdk/bin:$PATH
         run: |
           scp build/libs/*.jar $EC2_USER@$EC2_IP:/home/ec2-user/deploy.jar
           ssh $EC2_USER@$EC2_IP "chmod +x /home/ec2-user/deploy.sh && /home/ec2-user/deploy.sh"
