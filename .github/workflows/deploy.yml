@@ -48,10 +48,5 @@ jobs:
           JAVA_HOME: /usr/lib/jvm/java-17-openjdk
           PATH: /usr/lib/jvm/java-17-openjdk/bin:$PATH
         run: |
-          
-          ssh $EC2_USER@$EC2_IP "which java"
-          ssh $EC2_USER@$EC2_IP "echo $JAVA_HOME"
-          ssh $EC2_USER@$EC2_IP
-
           scp build/libs/*.jar $EC2_USER@$EC2_IP:/home/ec2-user/deploy.jar
           ssh $EC2_USER@$EC2_IP "chmod +x /home/ec2-user/deploy.sh && /home/ec2-user/deploy.sh"
