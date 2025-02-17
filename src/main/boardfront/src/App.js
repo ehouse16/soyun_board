@@ -47,7 +47,7 @@ function App() {
             </AppBar>
             <Container sx={{ mt: 4 }}>
                 <Routes>
-                    <Route path="/" element={<Typography variant="h4" align="center">게시판 홈페이지에 오신 것을 환영합니다</Typography>} />
+                    <Route path="/" element={<Typography variant="h4" align="center">멋있는 소윤의 게시판 만들기</Typography>} />
                     <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/posts/create" element={<ProtectedRoute><PostCreate /></ProtectedRoute>} />

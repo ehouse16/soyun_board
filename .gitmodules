@@ -1,0 +1,3 @@
+[submodule "secure_submodule"]
+	path = secure_submodule
+	url = https://github.com/ehouse16/secure_submodule.git
