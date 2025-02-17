@@ -43,5 +43,3 @@ jobs:
         run: |
           scp build/libs/*.jar $EC2_USER@$EC2_IP:/home/ec2-user/deploy.jar
           ssh $EC2_USER@$EC2_IP "chmod +x /home/ec2-user/deploy.sh && /home/ec2-user/deploy.sh"
-
-# deploy.sh 스크립트를 만들어서 instance 안에 넣고 ci/cd는 이걸 실행만하게 해라
