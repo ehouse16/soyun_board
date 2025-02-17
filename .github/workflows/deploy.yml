@@ -42,8 +42,8 @@ jobs:
           scp build/libs/*.jar ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }}:/home/ec2-user/deploy.jar
           
           # EC2에서 명령어 실행하여 Spring Boot 애플리케이션을 백그라운드에서 실행
-           ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }} << 'EOF'
-             nohup java -jar /home/ec2-user/deploy.jar &
-           EOF
+          # ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_IP }} << 'EOF'
+          #   nohup java -jar /home/ec2-user/deploy.jar &
+          # EOF
 
 # deploy.sh 스크립트를 만들어서 instance 안에 넣고 ci/cd는 이걸 실행만하게 해라
