@@ -13,10 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install SSH client and dependencies
+      - name: Install SSH client
         run: |
           sudo apt-get update
-          sudo apt-get install -y openssh-client scp
+          sudo apt-get install -y openssh-client
 
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -52,5 +52,10 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_IP: ${{ secrets.EC2_IP }}
         run: |
-          scp build/libs/*.jar $EC2_USER@$EC2_IP:/home/ec2-user/deploy.jar
+          # Verify scp is available
+          which scp || echo "SCP location: $(which scp)"
+          # List files to be copied
+          ls -l build/libs/
+          # Deploy with verbose output
+          scp -v build/libs/*.jar $EC2_USER@$EC2_IP:/home/ec2-user/deploy.jar
           ssh $EC2_USER@$EC2_IP "chmod +x /home/ec2-user/deploy.sh && /home/ec2-user/deploy.sh"
