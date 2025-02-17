@@ -4,7 +4,7 @@ Soyun Board는 Spring Boot와 React를 기반으로 개발된 게시판 애플�
 ## 🛠 기술 스택
 * Frontend: React 
 * Backend: Spring Boot
-* Database: H2 Database (혹은 원하는 DB로 설정 가능)
+* Database: H2 Database (혹은 원하는 DB로 설정 가능) 
 * Build Tool: Gradle
     
 ## 🚀 기능
