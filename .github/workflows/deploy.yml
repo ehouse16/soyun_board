@@ -28,7 +28,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-          check-latest: false
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
@@ -52,10 +51,19 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_IP: ${{ secrets.EC2_IP }}
         run: |
-          # Verify scp is available
-          which scp || echo "SCP location: $(which scp)"
-          # List files to be copied
-          ls -l build/libs/
-          # Deploy with verbose output
-          scp -v build/libs/*.jar $EC2_USER@$EC2_IP:/home/ec2-user/deploy.jar
-          ssh $EC2_USER@$EC2_IP "chmod +x /home/ec2-user/deploy.sh && /home/ec2-user/deploy.sh"
+          set -e  # 에러 발생 시 즉시 종료
+
+          # JAR 파일 존재 여부 확인
+          JAR_FILE=$(ls build/libs/*.jar | head -n 1)
+          if [ ! -f "$JAR_FILE" ]; then
+            echo "❌ JAR 파일을 찾을 수 없습니다!"
+            exit 1
+          fi
+
+          # JAR 파일 전송
+          echo "🚀 JAR 파일을 EC2로 전송 중..."
+          scp "$JAR_FILE" $EC2_USER@$EC2_IP:/home/ec2-user/deploy.jar
+
+          # 배포 스크립트 실행
+          echo "🚀 EC2에서 배포 스크립트 실행..."
+          ssh $EC2_USER@$EC2_IP "/home/ec2-user/deploy.sh"
