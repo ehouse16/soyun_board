@@ -18,4 +18,4 @@ Soyun Board는 Spring Boot와 React를 기반으로 개발된 게시판 애플�
 
 ## 🔧 개발 환경 설정
 * Java 17 이상
- 
+  
