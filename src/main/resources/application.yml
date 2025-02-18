@@ -7,7 +7,7 @@ spring:
 
   ## ✅ 서버 설정
   profiles:
-    active: dev   # 기본적으로 사용할 프로파일 (dev 또는 prod)
+    active: prod   # 기본적으로 사용할 프로파일 (dev 또는 prod)
   security:
     filter:
       order: 10
